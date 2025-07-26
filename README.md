@@ -1,11 +1,17 @@
-# E.RECALLER - English Learning Platform  
+# E.RECALLER - English Learning Platform
 
-🚀 **Live Demo**: [https://ambradditi.github.io](https://ambradditi.github.io)  
+🚀 **Live Demo**: [https://android01.github.io/E.RECALLER_0.1](https://android01.github.io/E.RECALLER_0.1)
 
 ## About  
-A personalized platform for mastering English tenses, vocabulary, and grammar through interactive exercises.  
+An interactive platform for practicing English tenses and grammar.
 
 ## Features  
-✔️ Tense practice with instant feedback  
-✔️ Progress tracking  
-✔️ Mobile-friendly design  
+✔ Tense exercises with instant feedback  
+✔ Progress tracking  
+✔ Responsive design (works on mobile/desktop)
+
+## How to Use  
+1. Visit the [Live Demo](https://android01.github.io/E.RECALLER_0.1)  
+2. Or clone this repository:  
+   ```bash
+   git clone https://github.com/Android01/E.RECALLER_0.1.git
