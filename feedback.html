@@ -371,314 +371,148 @@
   </header>
 
   <!-- Feedback Section -->
-  <section class="feedback-section">
-    <h2 class="section-title">User Feedback</h2>
-    <div class="feedback-container">
-      <div class="feedback-header">
-        <h3 class="feedback-title">What Learners Say</h3>
-        <button class="feedback-button" id="openFeedbackForm">
-          <i class="fas fa-plus"></i> Add Feedback
-        </button>
-      </div>
-      <div class="feedback-items" id="feedbackItems">
-        <div class="no-feedback">
-          <p><i class="fas fa-spinner fa-spin"></i> Loading feedback...</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feedback Modal -->
-  <div class="modal" id="feedbackModal">
-    <div class="modal-content">
-      <button class="close-modal" id="closeModal">&times;</button>
-      <h2 style="margin-top: 0; color: var(--primary);">Share Your Feedback</h2>
-      
-      <form id="feedbackForm">
-        <div id="formError" class="error-message" style="display: none;"></div>
-        
-        <div class="form-group">
-          <label for="name">Your Name (optional)</label>
-          <input type="text" id="name" name="name" placeholder="John Doe">
-        </div>
-        
-        <div class="form-group">
-          <label>Rating</label>
-          <div class="rating-container">
-            <input type="radio" id="star5" name="rating" value="5">
-            <label for="star5">★</label>
-            <input type="radio" id="star4" name="rating" value="4">
-            <label for="star4">★</label>
-            <input type="radio" id="star3" name="rating" value="3">
-            <label for="star3">★</label>
-            <input type="radio" id="star2" name="rating" value="2">
-            <label for="star2">★</label>
-            <input type="radio" id="star1" name="rating" value="1" checked>
-            <label for="star1">★</label>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="feedback">Your Feedback</label>
-          <textarea id="feedback" name="feedback" placeholder="Share your experience..." required></textarea>
-        </div>
-        
-        <button type="submit" class="submit-btn">
-          <span id="submitText">Submit Feedback</span>
-          <span id="submitSpinner" style="display: none;">
-            <i class="fas fa-spinner fa-spin"></i> Processing...
-          </span>
-        </button>
-      </form>
-      
-      <div class="success-message" id="successMessage">
-        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-        <p>Thank you for your feedback!</p>
-        <p>Your input helps us improve.</p>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // Configuration - REPLACE WITH YOUR APPS SCRIPT DEPLOYMENT URL
+    // UPDATED Configuration with cache-busting
     const CONFIG = {
       SCRIPT_URL: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec",
       MAX_RETRIES: 3,
-      TIMEOUT: 8000
+      TIMEOUT: 10000 // Increased timeout to 10 seconds
     };
 
-    // DOM Elements
-    const feedbackModal = document.getElementById('feedbackModal');
-    const openFeedbackForm = document.getElementById('openFeedbackForm');
-    const closeModal = document.getElementById('closeModal');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const successMessage = document.getElementById('successMessage');
-    const formError = document.getElementById('formError');
-    const submitText = document.getElementById('submitText');
-    const submitSpinner = document.getElementById('submitSpinner');
-    const feedbackItems = document.getElementById('feedbackItems');
-
-    // Modal Controls
-    openFeedbackForm.addEventListener('click', () => feedbackModal.style.display = 'flex');
-    closeModal.addEventListener('click', closeFeedbackModal);
-    feedbackModal.addEventListener('click', (e) => e.target === feedbackModal && closeFeedbackModal());
-
-    function closeFeedbackModal() {
-      feedbackModal.style.display = 'none';
-      resetForm();
-    }
-
-    function resetForm() {
-      feedbackForm.reset();
-      feedbackForm.style.display = 'block';
-      successMessage.style.display = 'none';
-      formError.style.display = 'none';
-    }
-
-    // Enhanced fetch with timeout and automatic JSONP fallback
+    // UPDATED fetch with enhanced error handling
     async function safeFetch(url, options = {}) {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-      
       try {
-        // First try regular fetch
-        const response = await fetch(url, {
+        // Add cache-buster and timestamp
+        const fetchUrl = new URL(url);
+        fetchUrl.searchParams.append('t', Date.now());
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+        
+        const response = await fetch(fetchUrl, {
           ...options,
           signal: controller.signal,
-          referrerPolicy: 'no-referrer'
+          referrerPolicy: 'no-referrer',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            ...(options.headers || {})
+          }
         });
         
-        // If CORS fails, try JSONP
-        if (!response.ok || response.status === 0) {
-          return await jsonpFetch(url);
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          const error = new Error(response.statusText);
+          error.response = response;
+          throw error;
         }
         
-        clearTimeout(timeoutId);
         return response;
       } catch (error) {
-        clearTimeout(timeoutId);
-        throw error;
+        console.error('Fetch error:', error);
+        throw new Error(
+          error.message === 'Failed to fetch' 
+            ? 'Network error. Please check your internet connection.'
+            : error.message
+        );
       }
     }
 
-    // JSONP fallback method
-    function jsonpFetch(url) {
-      return new Promise((resolve, reject) => {
-        const callbackName = `jsonp_${Date.now()}`;
-        const script = document.createElement('script');
-        
-        window[callbackName] = (data) => {
-          delete window[callbackName];
-          document.body.removeChild(script);
-          resolve({
-            ok: true,
-            json: () => Promise.resolve(data)
-          });
-        };
-        
-        script.src = `${url}?callback=${callbackName}`;
-        script.onerror = () => {
-          reject(new Error('JSONP request failed'));
-        };
-        
-        document.body.appendChild(script);
-      });
-    }
-
-    // Load feedback data
+    // UPDATED loadFeedback function
     async function loadFeedback() {
-      feedbackItems.innerHTML = `
-        <div class="no-feedback">
-          <p><i class="fas fa-spinner fa-spin"></i> Loading feedback...</p>
-        </div>
-      `;
-
       try {
-        // Add cache-buster parameter
-        const url = `${CONFIG.SCRIPT_URL}?t=${Date.now()}`;
-        const response = await safeFetch(url);
+        showLoadingState();
         
-        const data = await response.json();
-        displayFeedback(data.data || data);
+        const response = await safeFetch(CONFIG.SCRIPT_URL);
+        const result = await response.json();
+        
+        if (result.error) {
+          throw new Error(result.message || 'Server error');
+        }
+        
+        displayFeedback(result.data || result);
       } catch (error) {
-        console.error("Failed to load feedback:", error);
-        showNetworkError(error);
+        showErrorState(error);
       }
     }
 
-    function displayFeedback(feedbackData) {
-      if (!feedbackData || feedbackData.length === 0) {
-        feedbackItems.innerHTML = `
-          <div class="no-feedback">
-            <p>No feedback yet. Be the first to share!</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Sort by date (newest first)
-      const sortedData = [...feedbackData].sort((a, b) => 
-        new Date(b.Timestamp || 0) - new Date(a.Timestamp || 0)
-      );
-
-      feedbackItems.innerHTML = sortedData.map(item => `
-        <div class="feedback-item">
-          <div class="feedback-meta">
-            <span class="feedback-author">${escapeHtml(item.Name || "Anonymous")}</span>
-            <span class="feedback-date">${formatDate(item.Timestamp)}</span>
-          </div>
-          ${item.Rating ? `<div class="feedback-rating">${"★".repeat(item.Rating)}${"☆".repeat(5 - item.Rating)}</div>` : ''}
-          <div class="feedback-content">
-            <p>${escapeHtml(item.Feedback || "No message provided.")}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function showNetworkError(error) {
-      feedbackItems.innerHTML = `
-        <div class="no-feedback">
-          <div class="network-error">
-            <p><i class="fas fa-exclamation-triangle"></i> Connection Error</p>
-            <p>${error.message}</p>
-            <button onclick="loadFeedback()" class="retry-button">
-              <i class="fas fa-sync-alt"></i> Try Again
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Submit feedback
-    feedbackForm.addEventListener('submit', async (e) => {
+    // UPDATED submit handler
+    async function handleSubmit(e) {
       e.preventDefault();
       
-      submitText.style.display = 'none';
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
       submitSpinner.style.display = 'inline';
+      submitText.style.display = 'none';
       formError.style.display = 'none';
 
       try {
-        const formData = new FormData(feedbackForm);
-        const data = {
+        const formData = new FormData(e.target);
+        const payload = {
           Name: formData.get('name') || 'Anonymous',
-          Rating: formData.get('rating') || 1,
+          Rating: formData.get('rating') || 3, // Default to 3 stars
           Feedback: formData.get('feedback'),
           Timestamp: new Date().toISOString()
         };
 
-        // Validate feedback
-        if (!data.Feedback || data.Feedback.trim() === '') {
-          throw new Error('Please enter your feedback');
+        if (!payload.Feedback || payload.Feedback.trim().length < 3) {
+          throw new Error('Please provide meaningful feedback (at least 3 characters)');
         }
 
         const response = await safeFetch(CONFIG.SCRIPT_URL, {
           method: 'POST',
-          body: JSON.stringify(data),
-          headers: { 
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          }
+          body: JSON.stringify(payload)
         });
 
         const result = await response.json();
         
-        if (!response.ok) {
+        if (!response.ok || result.error) {
           throw new Error(result.message || 'Submission failed');
         }
 
-        feedbackForm.style.display = 'none';
-        successMessage.style.display = 'block';
-        
+        showSuccessState();
         setTimeout(() => {
           closeFeedbackModal();
           loadFeedback();
-        }, 2000);
+        }, 1500);
       } catch (error) {
-        console.error('Submit error:', error);
-        showFormError(error.message.includes('Failed to fetch') 
-          ? 'Network error. Please check your connection.' 
-          : error.message);
+        showFormError(error.message);
       } finally {
-        submitText.style.display = 'inline';
+        submitBtn.disabled = false;
         submitSpinner.style.display = 'none';
+        submitText.style.display = 'inline';
+      }
+    }
+
+    // [Keep all other helper functions from previous version]
+
+    // Initialize with error handling
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        // Event listeners
+        openFeedbackForm.addEventListener('click', () => feedbackModal.style.display = 'flex');
+        closeModal.addEventListener('click', closeFeedbackModal);
+        feedbackModal.addEventListener('click', (e) => e.target === feedbackModal && closeFeedbackModal());
+        feedbackForm.addEventListener('submit', handleSubmit);
+        
+        // Initial load
+        loadFeedback();
+      } catch (error) {
+        console.error('Initialization error:', error);
+        feedbackItems.innerHTML = `
+          <div class="no-feedback">
+            <div class="network-error">
+              <p><i class="fas fa-exclamation-circle"></i> System Error</p>
+              <p>Please refresh the page</p>
+              <button onclick="window.location.reload()" class="retry-button">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+            </div>
+          </div>
+        `;
       }
     });
-
-    function showFormError(message) {
-      formError.textContent = message;
-      formError.style.display = 'block';
-      formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Helper functions
-    function formatDate(dateString) {
-      if (!dateString) return "";
-      const date = new Date(dateString);
-      return isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    }
-
-    function escapeHtml(unsafe) {
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    // Initialize
-    document.addEventListener("DOMContentLoaded", () => {
-      loadFeedback();
-    });
-
-    // Make loadFeedback available globally for retry button
-    window.loadFeedback = loadFeedback;
   </script>
 </body>
 </html>
