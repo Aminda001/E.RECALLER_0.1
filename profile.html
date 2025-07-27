@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - E.RECALLER</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4a6bff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .nav-links a:hover {
+            color: #4a6bff;
+        }
+        
+        .nav-links a.active {
+            color: #4a6bff;
+            font-weight: 600;
+        }
+        
+        /* Profile Container */
+        .profile-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Profile Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-pic-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+        
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #4a6bff;
+            background-color: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a6bff;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        
+        .upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #4a6bff;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .profile-name {
+            color: #4a6bff;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-level {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4a6bff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Profile Details */
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4a6bff;
+        }
+        
+        .detail-card h3 {
+            color: #4a6bff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Progress Section */
+        .progress-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 10px auto;
+            max-width: 400px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a6bff, #8a2be2);
+            border-radius: 5px;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .progress-stat {
+            font-weight: 500;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: #4a6bff;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #4a6bff;
+            color: #4a6bff;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        /* No User Message */
+        .no-user {
+            text-align: center;
+            padding: 50px;
+        }
+        
+        .no-user a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #4a6bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="E.RECALLER Logo" class="logo-img">
+            <div class="logo-text">E.RECALLER</div>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="tenses.html"><i class="fas fa-book-open"></i> Lessons</a>
+            <a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </header>
+
+    <!-- Profile Content -->
+    <div id="profile-content">
+        <!-- Content will be loaded by JavaScript -->
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="close-btn" id="close-edit-modal">&times;</button>
+            </div>
+            
+            <form id="edit-profile-form">
+                <div class="form-group">
+                    <label for="edit-name">Full Name</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-mobile">Mobile Number</label>
+                    <input type="tel" id="edit-mobile" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-gender">Gender</label>
+                    <select id="edit-gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-birthday">Birthday</label>
+                    <input type="date" id="edit-birthday" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-district">District</label>
+                    <select id="edit-district" required>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Gampaha">Gampaha</option>
+                        <option value="Kalutara">Kalutara</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Matale">Matale</option>
+                        <option value="Nuwara Eliya">Nuwara Eliya</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Hambantota">Hambantota</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Kilinochchi">Kilinochchi</option>
+                        <option value="Mannar">Mannar</option>
+                        <option value="Vavuniya">Vavuniya</option>
+                        <option value="Mullaitivu">Mullaitivu</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Ampara">Ampara</option>
+                        <option value="Trincomalee">Trincomalee</option>
+                        <option value="Kurunegala">Kurunegala</option>
+                        <option value="Puttalam">Puttalam</option>
+                        <option value="Anuradhapura">Anuradhapura</option>
+                        <option value="Polonnaruwa">Polonnaruwa</option>
+                        <option value="Badulla">Badulla</option>
+                        <option value="Monaragala">Monaragala</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                        <option value="Kegalle">Kegalle</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="change-password-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="close-btn" id="close-password-modal">&times;</button>
+            </div>
+            
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal" id="delete-account-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete Account</h2>
+                <button class="close-btn" id="close-delete-modal">&times;</button>
+            </div>
+            
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            
+            <div class="action-buttons" style="margin-top: 20px; justify-content: center;">
+                <button class="btn btn-danger" id="confirm-delete">Yes, Delete</button>
+                <button class="btn btn-outline" id="cancel-delete">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to determine level based on progress
+        function getLevel(progress) {
+            if (progress < 30) return { level: 'Beginner', color: '#4a6bff' };
+            if (progress < 50) return { level: 'Intermediate', color: '#2ecc71' };
+            if (progress < 70) return { level: 'Advanced', color: '#f39c12' };
+            if (progress < 90) return { level: 'Expert', color: '#e74c3c' };
+            return { level: 'Master', color: '#9b59b6' };
+        }
+
+        // Load user data
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileContent = document.getElementById('profile-content');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                profileContent.innerHTML = `
+                    <div class="no-user">
+                        <h2>No user logged in</h2>
+                        <p>Please login to view your profile</p>
+                        <a href="login.html">Go to Login</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Calculate progress and level
+            const progress = currentUser.progress || 12;
+            const points = currentUser.points || 120;
+            const levelInfo = getLevel(progress);
+            
+            // Generate avatar initials
+            const nameParts = currentUser.name.split(' ');
+            const initials = nameParts.length > 1 
+                ? `${nameParts[0][0]}${nameParts[nameParts.length-1][0]}` 
+                : currentUser.name.substring(0, 2);
+            
+            profileContent.innerHTML = `
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-pic-container">
+                            ${currentUser.profilePic 
+                                ? `<img src="${currentUser.profilePic}" alt="Profile" class="profile-pic">`
+                                : `<div class="profile-pic">${initials.toUpperCase()}</div>`
+                            }
+                            <button class="upload-btn" id="upload-btn">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                            </button>
+                        </div>
+                        
+                        <h1 class="profile-name">${currentUser.name}</h1>
+                        <span class="profile-level" style="background: ${levelInfo.color}20; color: ${levelInfo.color}">
+                            ${levelInfo.level}
+                        </span>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" id="edit-profile-btn">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </button>
+                            <button class="btn btn-outline" id="change-password-btn">
+                                <i class="fas fa-key"></i> Change Password
+                            </button>
+                            <button class="btn btn-danger" id="delete-account-btn">
+                                <i class="fas fa-trash-alt"></i> Delete Account
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-card">
+                            <h3><i class="fas fa-mobile-alt"></i> Contact</h3>
+                            <p>${currentUser.mobile || 'Not provided'}</p>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <h3><i class="fas fa-venus-mars"></i> Gender</h3>
+                            <p>${currentUser.gender || 'Not specified'}</p>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <h3><i class="fas fa-birthday-cake"></i> Birthday</h3>
+                            <p>${currentUser.birthday || 'Not specified'}</p>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <h3><i class="fas fa-map-marker-alt"></i> District</h3>
+                            <p>${currentUser.district ? currentUser.district + ', Sri Lanka' : 'Not specified'}</p>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <h3><i class="fas fa-sign-in-alt"></i> Last Login</h3>
+                            <p>${currentUser.lastLogin || new Date().toLocaleString()}</p>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <h3><i class="fas fa-calendar-alt"></i> Member Since</h3>
+                            <p>${currentUser.joinedDate || 'Recently'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <h2><i class="fas fa-chart-line"></i> Learning Progress</h2>
+                        <p>Your overall progress based on completed activities</p>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <span class="progress-stat">${progress}% completed</span>
+                                <span class="progress-stat">${points} points</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Initialize event listeners for dynamic elements
+            initProfileEvents();
+        });
+
+        function initProfileEvents() {
+            // Profile picture upload
+            const uploadBtn = document.getElementById('upload-btn');
+            if (uploadBtn) {
+                uploadBtn.addEventListener('click', function() {
+                    document.getElementById('profile-upload').click();
+                });
+                
+                document.getElementById('profile-upload').addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const imgUrl = event.target.result;
+                            
+                            // Update current user data
+                            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                            currentUser.profilePic = imgUrl;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            
+                            // Update all users data
+                            const users = JSON.parse(localStorage.getItem('users')) || [];
+                            const userIndex = users.findIndex(u => u.name === currentUser.name);
+                            if (userIndex !== -1) {
+                                users[userIndex].profilePic = imgUrl;
+                                localStorage.setItem('users', JSON.stringify(users));
+                            }
+                            
+                            // Reload profile to show new image
+                            location.reload();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Modal controls
+            const editModal = document.getElementById('edit-profile-modal');
+            const passwordModal = document.getElementById('change-password-modal');
+            const deleteModal = document.getElementById('delete-account-modal');
+            
+            document.getElementById('edit-profile-btn')?.addEventListener('click', function() {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                
+                // Fill form with current data
+                document.getElementById('edit-name').value = currentUser.name || '';
+                document.getElementById('edit-mobile').value = currentUser.mobile || '';
+                document.getElementById('edit-gender').value = currentUser.gender || 'Male';
+                document.getElementById('edit-birthday').value = currentUser.birthdayDate || '';
+                document.getElementById('edit-district').value = currentUser.district || 'Colombo';
+                
+                editModal.style.display = 'flex';
+            });
+            
+            document.getElementById('change-password-btn')?.addEventListener('click', function() {
+                passwordModal.style.display = 'flex';
+            });
+            
+            document.getElementById('delete-account-btn')?.addEventListener('click', function() {
+                deleteModal.style.display = 'flex';
+            });
+            
+            // Close modals
+            document.getElementById('close-edit-modal').addEventListener('click', function() {
+                editModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-password-modal').addEventListener('click', function() {
+                passwordModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-delete-modal').addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            document.getElementById('cancel-delete').addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === editModal) editModal.style.display = 'none';
+                if (e.target === passwordModal) passwordModal.style.display = 'none';
+                if (e.target === deleteModal) deleteModal.style.display = 'none';
+            });
+
+            // Save profile changes
+            document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const userIndex = users.findIndex(u => u.name === currentUser.name);
+                
+                // Update user data
+                currentUser.name = document.getElementById('edit-name').value;
+                currentUser.mobile = document.getElementById('edit-mobile').value;
+                currentUser.gender = document.getElementById('edit-gender').value;
+                
+                const birthdayDate = new Date(document.getElementById('edit-birthday').value);
+                currentUser.birthday = birthdayDate.toLocaleDateString('en-US', { 
+                    month: 'long', day: 'numeric', year: 'numeric' 
+                });
+                currentUser.birthdayDate = document.getElementById('edit-birthday').value;
+                
+                currentUser.district = document.getElementById('edit-district').value;
+                
+                // Save to localStorage
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Update in users array
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                editModal.style.display = 'none';
+                location.reload(); // Refresh to show updated data
+            });
+
+            // Change password
+            document.getElementById('change-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                if (newPassword !== confirmPassword) {
+                    alert('New passwords do not match!');
+                    return;
+                }
+                
+                if (newPassword.length < 6) {
+                    alert('Password must be at least 6 characters');
+                    return;
+                }
+                
+                // Update password in users array
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const userIndex = users.findIndex(u => u.name === currentUser.name);
+                
+                if (userIndex !== -1) {
+                    // In real app, verify current password first
+                    users[userIndex].password = newPassword; // Note: In production, hash this password
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                alert('Password changed successfully!');
+                passwordModal.style.display = 'none';
+                document.getElementById('change-password-form').reset();
+            });
+
+            // Delete account
+            document.getElementById('confirm-delete').addEventListener('click', function() {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Remove user from users array
+                users = users.filter(u => u.name !== currentUser.name);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Clear current session
+                localStorage.removeItem('currentUser');
+                
+                alert('Account deleted successfully');
+                window.location.href = 'index.html';
+            });
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+        }
+
+   // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        document.getElementById('mobile-logout').addEventListener('click', logout);
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
+    </script>
+</body>
+</html>

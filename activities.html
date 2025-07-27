@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Tense Practice</title>
+    <style>
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #3498db;
+        }
+        
+        .nav-links .active {
+            color: #3498db;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .activity-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .options {
+            margin-top: 10px;
+        }
+        .option {
+            margin: 5px 0;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .answer-info {
+            background-color: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .score-display {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .tense-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0 10px 0;
+        }
+        .completed {
+            opacity: 0.9;
+            background-color: #f0f0f0;
+        }
+        .user-account {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 5px;
+        }
+        .user-answer {
+            font-weight: bold;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #155724;
+        }
+        .checkmark {
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .activity-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .activity-type-btn {
+            padding: 8px 15px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .activity-type-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .fill-gap-input {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin: 0 5px;
+        }
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        .word-bank-item {
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .word-bank-item.used {
+            opacity: 0.5;
+            text-decoration: line-through;
+            cursor: default;
+        }
+        .sentence-builder {
+            min-height: 50px;
+            border: 1px dashed #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+        .sentence-builder-word {
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .hidden-word {
+            display: inline-block;
+            width: 100px;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-bottom: 2px solid #333;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        .timeline {
+            display: flex;
+            margin: 20px 0;
+            position: relative;
+            height: 60px;
+        }
+        .timeline-line {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #333;
+            z-index: 1;
+        }
+        .timeline-event {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            z-index: 2;
+        }
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+        .timeline-label {
+            font-size: 12px;
+        }
+        .timeline-sentence {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 120px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">E.RECALLER</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="tenses.html">Tenses</a>
+            <a href="activities.html" class="active">Activities</a>
+            <a href="about.html">About Us</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>English Tense Practice</h1>
+        
+        <div class="score-display">
+            Score: <span id="score">0</span> points
+            <span id="streak-counter">Streak: 0</span>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        
+        <div class="activity-type-selector">
+            <button class="activity-type-btn active" data-type="multiple-choice">Multiple Choice</button>
+            <button class="activity-type-btn" data-type="fill-gap">Fill in the Gap</button>
+            <button class="activity-type-btn" data-type="sentence-builder">Sentence Builder</button>
+            <button class="activity-type-btn" data-type="timeline">Timeline Matching</button>
+            <button class="activity-type-btn" data-type="word-guess">Guess the Word</button>
+        </div>
+
+        <div class="user-account">
+            <h3>Your Progress</h3>
+            <p>Correct answers: <span id="correct-count">0</span></p>
+            <p>Incorrect answers: <span id="incorrect-count">0</span></p>
+            <p>Questions remaining: <span id="remaining-count">100</span></p>
+            <p>Badges: 
+                <span id="beginner-badge" class="badge" style="display:none">Beginner</span>
+                <span id="intermediate-badge" class="badge" style="display:none">Intermediate</span>
+                <span id="expert-badge" class="badge" style="display:none">Expert</span>
+            </p>
+            <button id="reset-btn" style="background-color: #e74c3c;">Reset Progress</button>
+        </div>
+
+        <div id="activities-container">
+            <!-- Activities will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // User account data
+        const userAccount = {
+            score: 0,
+            correctAnswers: 0,
+            incorrectAnswers: 0,
+            streak: 0,
+            answeredQuestions: new Map(),
+            currentActivityType: 'multiple-choice',
+            activities: []
+        };
+
+        // All activities data
+        const allActivities = {
+            // Multiple Choice Questions (existing)
+            'multiple-choice': [
+                {
+                    tense: "Simple Present Tense",
+                    question: "She ___ rice every day.",
+                    options: ["cook", "cooking", "cooks", "cooked"],
+                    answer: 2,
+                    answered: false
+                },
+                {
+                    tense: "Present Continuous Tense",
+                    question: "She ___ dinner now.",
+                    options: ["cooks", "is cooking", "cook", "cooked"],
+                    answer: 1,
+                    answered: false
+                }
+                // ... (include all your existing multiple choice questions)
+            ],
+            
+            // Fill in the Gap activities
+            'fill-gap': [
+                {
+                    tense: "Simple Past Tense",
+                    question: "Yesterday, she ___ (go) to the market and ___ (buy) some fruits.",
+                    answer: ["went", "bought"],
+                    answered: false
+                },
+                {
+                    tense: "Present Perfect Tense",
+                    question: "I ___ (finish) my homework and ___ (clean) my room already.",
+                    answer: ["have finished", "have cleaned"],
+                    answered: false
+                }
+            ],
+            
+            // Sentence Builder activities
+            'sentence-builder': [
+                {
+                    tense: "Future Continuous Tense",
+                    words: ["will", "be", "studying", "I", "at", "8pm", "tomorrow"],
+                    answer: "I will be studying at 8pm tomorrow",
+                    answered: false
+                },
+                {
+                    tense: "Past Perfect Tense",
+                    words: ["had", "finished", "work", "She", "her", "before", "arrived", "we"],
+                    answer: "She had finished her work before we arrived",
+                    answered: false
+                }
+            ],
+            
+            // Timeline Matching activities
+            'timeline': [
+                {
+                    tense: "Mixed Tenses",
+                    events: [
+                        {sentence: "I eat breakfast every day", correctPosition: 0},
+                        {sentence: "Right now I'm drinking coffee", correctPosition: 1},
+                        {sentence: "Yesterday I went to the park", correctPosition: 2},
+                        {sentence: "By tomorrow I will have finished my project", correctPosition: 3}
+                    ],
+                    answered: false
+                }
+            ],
+            
+            // Guess the Word activities
+            'word-guess': [
+                {
+                    tense: "Present Simple Tense",
+                    hint: "Something you do every morning to clean your teeth",
+                    answer: "brush",
+                    answered: false
+                },
+                {
+                    tense: "Past Simple Tense",
+                    hint: "The past form of 'go'",
+                    answer: "went",
+                    answered: false
+                }
+            ]
+        };
+
+        // Save user progress to localStorage
+        function saveProgress() {
+            const progress = {
+                score: userAccount.score,
+                correctAnswers: userAccount.correctAnswers,
+                incorrectAnswers: userAccount.incorrectAnswers,
+                streak: userAccount.streak,
+                answeredQuestions: Array.from(userAccount.answeredQuestions.entries()),
+                currentActivityType: userAccount.currentActivityType
+            };
+            localStorage.setItem('tensePracticeProgress', JSON.stringify(progress));
+            
+            // Save which activities are answered for each type
+            const answeredActivities = {};
+            for (const type in allActivities) {
+                answeredActivities[type] = allActivities[type].map(a => a.answered);
+            }
+            localStorage.setItem('answeredActivities', JSON.stringify(answeredActivities));
+        }
+
+        // Load user progress from localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('tensePracticeProgress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                userAccount.score = progress.score;
+                userAccount.correctAnswers = progress.correctAnswers;
+                userAccount.incorrectAnswers = progress.incorrectAnswers;
+                userAccount.streak = progress.streak || 0;
+                userAccount.answeredQuestions = new Map(progress.answeredQuestions);
+                userAccount.currentActivityType = progress.currentActivityType || 'multiple-choice';
+            }
+            
+            // Load which activities are answered
+            const savedAnswered = localStorage.getItem('answeredActivities');
+            if (savedAnswered) {
+                const answered = JSON.parse(savedAnswered);
+                for (const type in answered) {
+                    if (allActivities[type]) {
+                        allActivities[type].forEach((a, index) => {
+                            a.answered = answered[type][index] || false;
+                        });
+                    }
+                }
+            }
+        }
+
+        // Initialize the app
+        function init() {
+            loadProgress();
+            setupActivityTypeButtons();
+            displayActivities();
+            updateUserAccountDisplay();
+            
+            // Set up reset button
+            document.getElementById('reset-btn').addEventListener('click', resetProgress);
+        }
+
+        // Set up activity type selector buttons
+        function setupActivityTypeButtons() {
+            const buttons = document.querySelectorAll('.activity-type-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    // Update current activity type
+                    userAccount.currentActivityType = button.dataset.type;
+                    saveProgress();
+                    displayActivities();
+                });
+            });
+        }
+
+        // Display activities based on current type
+        function displayActivities() {
+            const container = document.getElementById('activities-container');
+            container.innerHTML = '';
+            
+            // Get current activity type
+            const currentType = userAccount.currentActivityType;
+            const activities = allActivities[currentType];
+            
+            // Group activities by tense
+            const activitiesByTense = {};
+            activities.forEach(a => {
+                if (!activitiesByTense[a.tense]) {
+                    activitiesByTense[a.tense] = [];
+                }
+                activitiesByTense[a.tense].push(a);
+            });
+            
+            // Display activities for each tense
+            for (const tense in activitiesByTense) {
+                const tenseHeader = document.createElement('div');
+                tenseHeader.className = 'tense-header';
+                tenseHeader.textContent = tense;
+                container.appendChild(tenseHeader);
+                
+                activitiesByTense[tense].forEach((activity, index) => {
+                    const activityCard = document.createElement('div');
+                    activityCard.className = 'activity-card';
+                    if (activity.answered) {
+                        activityCard.classList.add('completed');
+                    }
+                    
+                    // Display different activity types
+                    switch(currentType) {
+                        case 'multiple-choice':
+                            renderMultipleChoice(activityCard, activity, index);
+                            break;
+                        case 'fill-gap':
+                            renderFillGap(activityCard, activity, index);
+                            break;
+                        case 'sentence-builder':
+                            renderSentenceBuilder(activityCard, activity, index);
+                            break;
+                        case 'timeline':
+                            renderTimeline(activityCard, activity, index);
+                            break;
+                        case 'word-guess':
+                            renderWordGuess(activityCard, activity, index);
+                            break;
+                    }
+                    
+                    container.appendChild(activityCard);
+                });
+            }
+        }
+
+        // Render multiple choice activity
+        function renderMultipleChoice(card, activity, index) {
+            const questionText = document.createElement('p');
+            questionText.textContent = activity.question;
+            card.appendChild(questionText);
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            activity.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `mc-${index}`;
+                radio.value = i;
+                radio.id = `mc-${index}-option-${i}`;
+                radio.disabled = activity.answered;
+                
+                // Check if this activity was answered
+                if (activity.answered) {
+                    radio.checked = (userAccount.answeredQuestions.get(`mc-${index}`)) === i;
+                }
+                
+                const label = document.createElement('label');
+                label.htmlFor = `mc-${index}-option-${i}`;
+                label.textContent = option;
+                
+                // Add checkmark if this is the correct answer
+                if (activity.answered && i === activity.answer) {
+                    const checkmark = document.createElement('span');
+                    checkmark.className = 'checkmark';
+                    checkmark.textContent = '✓';
+                    label.appendChild(checkmark);
+                }
+                
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsDiv.appendChild(optionDiv);
+            });
+            
+            card.appendChild(optionsDiv);
+            
+            if (!activity.answered) {
+                const submitBtn = document.createElement('button');
+                submitBtn.textContent = 'Submit Answer';
+                submitBtn.addEventListener('click', () => checkMultipleChoice(index));
+                card.appendChild(submitBtn);
+            } else {
+                showFeedback(card, `mc-${index}`, activity);
+            }
+        }
+
+        // Render fill in the gap activity
+        function renderFillGap(card, activity, index) {
+            // Process the question to find gaps marked with ___ or ( )
+            const parts = activity.question.split(/(___|\([^)]+\))/);
+            
+            const questionText = document.createElement('p');
+            parts.forEach((part, i) => {
+                if (part === '___' || (part.startsWith('(') && part.endsWith(')'))) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'fill-gap-input';
+                    input.dataset.index = i;
+                    input.disabled = activity.answered;
+                    
+                    // If answered, show the user's answer
+                    if (activity.answered) {
+                        const userAnswers = userAccount.answeredQuestions.get(`fg-${index}`) || [];
+                        const answerIndex = Math.floor(i / 2);
+                        input.value = userAnswers[answerIndex] || '';
+                        input.style.backgroundColor = userAnswers[answerIndex] === activity.answer[answerIndex] 
+                            ? '#d4edda' : '#f8d7da';
+                    }
+                    
+                    questionText.appendChild(input);
+                } else {
+                    questionText.appendChild(document.createTextNode(part));
+                }
+            });
+            card.appendChild(questionText);
+            
+            if (!activity.answered) {
+                const submitBtn = document.createElement('button');
+                submitBtn.textContent = 'Submit Answer';
+                submitBtn.addEventListener('click', () => checkFillGap(index, activity.answer.length));
+                card.appendChild(submitBtn);
+            } else {
+                showFeedback(card, `fg-${index}`, activity);
+            }
+        }
+
+        // Render sentence builder activity
+        function renderSentenceBuilder(card, activity, index) {
+            const instruction = document.createElement('p');
+            instruction.textContent = 'Build a correct sentence using these words:';
+            card.appendChild(instruction);
+            
+            // Word bank
+            const wordBank = document.createElement('div');
+            wordBank.className = 'word-bank';
+            
+            // Shuffle words for display
+            const shuffledWords = [...activity.words].sort(() => Math.random() - 0.5);
+            
+            shuffledWords.forEach((word, i) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-bank-item';
+                wordElement.textContent = word;
+                wordElement.dataset.word = word;
+                
+                if (activity.answered) {
+                    wordElement.classList.add('used');
+                } else {
+                    wordElement.addEventListener('click', () => {
+                        // Add word to sentence builder
+                        const sentenceBuilder = card.querySelector('.sentence-builder');
+                        const wordInSentence = document.createElement('div');
+                        wordInSentence.className = 'sentence-builder-word';
+                        wordInSentence.textContent = word;
+                        wordInSentence.dataset.word = word;
+                        
+                        // Allow removing words from sentence
+                        wordInSentence.addEventListener('click', function() {
+                            this.remove();
+                            // Return word to bank
+                            wordElement.classList.remove('used');
+                        });
+                        
+                        sentenceBuilder.appendChild(wordInSentence);
+                        wordElement.classList.add('used');
+                    });
+                }
+                
+                wordBank.appendChild(wordElement);
+            });
+            card.appendChild(wordBank);
+            
+            // Sentence builder area
+            const sentenceBuilder = document.createElement('div');
+            sentenceBuilder.className = 'sentence-builder';
+            card.appendChild(sentenceBuilder);
+            
+            if (activity.answered) {
+                // Show correct sentence
+                const correctSentence = document.createElement('div');
+                correctSentence.textContent = activity.answer;
+                correctSentence.style.marginTop = '10px';
+                correctSentence.style.fontWeight = 'bold';
+                correctSentence.style.color = '#28a745';
+                card.appendChild(correctSentence);
+            } else {
+                const submitBtn = document.createElement('button');
+                submitBtn.textContent = 'Submit Answer';
+                submitBtn.addEventListener('click', () => checkSentenceBuilder(index));
+                card.appendChild(submitBtn);
+            }
+        }
+
+        // Render timeline activity
+        function renderTimeline(card, activity, index) {
+            const instruction = document.createElement('p');
+            instruction.textContent = 'Drag the sentences to the correct position on the timeline:';
+            card.appendChild(instruction);
+            
+            // Create timeline
+            const timeline = document.createElement('div');
+            timeline.className = 'timeline';
+            
+            const timelineLine = document.createElement('div');
+            timelineLine.className = 'timeline-line';
+            timeline.appendChild(timelineLine);
+            
+            // Create events (positions on timeline)
+            const eventPositions = ['Past', 'Recent Past', 'Present', 'Future'];
+            eventPositions.forEach((pos, i) => {
+                const event = document.createElement('div');
+                event.className = 'timeline-event';
+                
+                const dot = document.createElement('div');
+                dot.className = 'timeline-dot';
+                event.appendChild(dot);
+                
+                const label = document.createElement('div');
+                label.className = 'timeline-label';
+                label.textContent = pos;
+                event.appendChild(label);
+                
+                timeline.appendChild(event);
+            });
+            
+            card.appendChild(timeline);
+            
+            // Create draggable sentences
+            const sentencesContainer = document.createElement('div');
+            sentencesContainer.style.marginTop = '20px';
+            
+            // Shuffle sentences for display
+            const shuffledSentences = [...activity.events].sort(() => Math.random() - 0.5);
+            
+            shuffledSentences.forEach((event, i) => {
+                const sentence = document.createElement('div');
+                sentence.className = 'question';
+                sentence.textContent = event.sentence;
+                sentence.draggable = !activity.answered;
+                sentence.dataset.correctPosition = event.correctPosition;
+                
+                if (activity.answered) {
+                    // Show correct position
+                    const feedback = document.createElement('div');
+                    feedback.textContent = `Correct position: ${eventPositions[event.correctPosition]}`;
+                    feedback.style.marginTop = '5px';
+                    feedback.style.fontSize = '0.9em';
+                    feedback.style.color = '#28a745';
+                    sentence.appendChild(feedback);
+                } else {
+                    // Make draggable
+                    sentence.style.cursor = 'move';
+                    sentence.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', i);
+                    });
+                }
+                
+                sentencesContainer.appendChild(sentence);
+            });
+            
+            card.appendChild(sentencesContainer);
+            
+            if (!activity.answered) {
+                // Make timeline droppable
+                timeline.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                
+                timeline.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const sentenceIndex = e.dataTransfer.getData('text/plain');
+                    const sentence = sentencesContainer.children[sentenceIndex];
+                    
+                    // Find which event position was dropped on
+                    const timelineEvents = timeline.querySelectorAll('.timeline-event');
+                    let dropPosition = -1;
+                    
+                    timelineEvents.forEach((event, i) => {
+                        const rect = event.getBoundingClientRect();
+                        if (e.clientX >= rect.left && e.clientX <= rect.right) {
+                            dropPosition = i;
+                        }
+                    });
+                    
+                    if (dropPosition >= 0) {
+                        // Show sentence on timeline
+                        const timelineEvent = timelineEvents[dropPosition];
+                        const existingSentence = timelineEvent.querySelector('.timeline-sentence');
+                        
+                        if (existingSentence) {
+                            existingSentence.remove();
+                        }
+                        
+                        const timelineSentence = document.createElement('div');
+                        timelineSentence.className = 'timeline-sentence';
+                        timelineSentence.textContent = sentence.textContent;
+                        timelineSentence.dataset.sentenceIndex = sentenceIndex;
+                        timelineEvent.appendChild(timelineSentence);
+                    }
+                });
+                
+                const submitBtn = document.createElement('button');
+                submitBtn.textContent = 'Submit Answer';
+                submitBtn.addEventListener('click', () => checkTimeline(index, activity.events.length));
+                card.appendChild(submitBtn);
+            }
+        }
+
+        // Render word guess activity
+        function renderWordGuess(card, activity, index) {
+            const hintText = document.createElement('p');
+            hintText.textContent = activity.hint;
+            card.appendChild(hintText);
+            
+            if (!activity.answered) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'fill-gap-input';
+                input.placeholder = 'Type your guess here';
+                card.appendChild(input);
+                
+                const submitBtn = document.createElement('button');
+                submitBtn.textContent = 'Submit Guess';
+                submitBtn.addEventListener('click', () => checkWordGuess(index, input));
+                card.appendChild(submitBtn);
+            } else {
+                const feedback = document.createElement('div');
+                const userAnswer = userAccount.answeredQuestions.get(`wg-${index}`);
+                
+                if (userAnswer.toLowerCase() === activity.answer.toLowerCase()) {
+                    feedback.textContent = `Correct! The word is "${activity.answer}"`;
+                    feedback.style.color = '#28a745';
+                } else {
+                    feedback.textContent = `Incorrect. The correct word is "${activity.answer}"`;
+                    feedback.style.color = '#dc3545';
+                }
+                
+                card.appendChild(feedback);
+            }
+        }
+
+        // Show feedback for answered activities
+        function showFeedback(card, activityKey, activity) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            
+            const userAnswer = userAccount.answeredQuestions.get(activityKey);
+            let isCorrect = false;
+            
+            // Check correctness based on activity type
+            if (Array.isArray(userAnswer)) {
+                // For fill-gap activities
+                isCorrect = userAnswer.every((ans, i) => 
+                    ans.toLowerCase() === activity.answer[i].toLowerCase());
+            } else if (typeof userAnswer === 'number') {
+                // For multiple choice
+                isCorrect = userAnswer === activity.answer;
+            } else if (activityKey.startsWith('wg-')) {
+                // For word guess
+                isCorrect = userAnswer.toLowerCase() === activity.answer.toLowerCase();
+            } else if (activityKey.startsWith('sb-')) {
+                // For sentence builder
+                isCorrect = userAnswer.replace(/\s+/g, ' ').trim().toLowerCase() === 
+                           activity.answer.replace(/\s+/g, ' ').trim().toLowerCase();
+            } else if (activityKey.startsWith('tl-')) {
+                // For timeline
+                isCorrect = userAnswer.every((pos, i) => pos === activity.events[i].correctPosition);
+            }
+            
+            if (isCorrect) {
+                feedbackDiv.textContent = 'Correct! +2 points';
+                feedbackDiv.style.color = '#28a745';
+            } else {
+                feedbackDiv.innerHTML = `Incorrect. ${getCorrectAnswerText(activity)}`;
+                feedbackDiv.style.color = '#dc3545';
+            }
+            
+            card.appendChild(feedbackDiv);
+        }
+
+        // Get correct answer text for feedback
+        function getCorrectAnswerText(activity) {
+            if (activity.options) {
+                return `Correct answer: <span class="correct-answer">${activity.options[activity.answer]}</span>`;
+            } else if (Array.isArray(activity.answer)) {
+                return `Correct answers: <span class="correct-answer">${activity.answer.join(', ')}</span>`;
+            } else {
+                return `Correct answer: <span class="correct-answer">${activity.answer}</span>`;
+            }
+        }
+
+        // Check multiple choice answer
+        function checkMultipleChoice(index) {
+            const activity = allActivities['multiple-choice'][index];
+            const selectedOption = document.querySelector(`input[name="mc-${index}"]:checked`);
+            
+            if (!selectedOption) {
+                alert('Please select an answer!');
+                return;
+            }
+            
+            const selectedAnswer = parseInt(selectedOption.value);
+            userAccount.answeredQuestions.set(`mc-${index}`, selectedAnswer);
+            
+            if (selectedAnswer === activity.answer) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer();
+            }
+            
+            activity.answered = true;
+            updateUserAccountDisplay();
+            saveProgress();
+            displayActivities();
+        }
+
+        // Check fill in the gap answer
+        function checkFillGap(index, expectedAnswerCount) {
+            const activity = allActivities['fill-gap'][index];
+            const inputs = document.querySelectorAll(`.activity-card input[data-index]`);
+            
+            if (inputs.length !== expectedAnswerCount * 2 - 1) {
+                alert('Please fill in all the gaps!');
+                return;
+            }
+            
+            const userAnswers = [];
+            for (let i = 0; i < inputs.length; i += 2) {
+                const input = inputs[i];
+                if (!input.value.trim()) {
+                    alert('Please fill in all the gaps!');
+                    return;
+                }
+                userAnswers.push(input.value.trim());
+            }
+            
+            userAccount.answeredQuestions.set(`fg-${index}`, userAnswers);
+            
+            // Check if all answers are correct
+            const isCorrect = userAnswers.every((ans, i) => 
+                ans.toLowerCase() === activity.answer[i].toLowerCase());
+            
+            if (isCorrect) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer();
+            }
+            
+            activity.answered = true;
+            updateUserAccountDisplay();
+            saveProgress();
+            displayActivities();
+        }
+
+        // Check sentence builder answer
+        function checkSentenceBuilder(index) {
+            const activity = allActivities['sentence-builder'][index];
+            const sentenceBuilder = document.querySelector('.sentence-builder');
+            const words = Array.from(sentenceBuilder.children).map(el => el.textContent);
+            
+            if (words.length !== activity.words.length) {
+                alert('Please use all the words to build your sentence!');
+                return;
+            }
+            
+            const userAnswer = words.join(' ');
+            userAccount.answeredQuestions.set(`sb-${index}`, userAnswer);
+            
+            const isCorrect = userAnswer.replace(/\s+/g, ' ').trim().toLowerCase() === 
+                             activity.answer.replace(/\s+/g, ' ').trim().toLowerCase();
+            
+            if (isCorrect) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer();
+            }
+            
+            activity.answered = true;
+            updateUserAccountDisplay();
+            saveProgress();
+            displayActivities();
+        }
+
+        // Check timeline answer
+        function checkTimeline(index, expectedEventCount) {
+            const activity = allActivities['timeline'][index];
+            const timelineEvents = document.querySelectorAll('.timeline-event');
+            const userAnswers = [];
+            
+            // Get positions of all sentences
+            for (let i = 0; i < timelineEvents.length; i++) {
+                const sentence = timelineEvents[i].querySelector('.timeline-sentence');
+                if (sentence) {
+                    userAnswers[parseInt(sentence.dataset.sentenceIndex)] = i;
+                }
+            }
+            
+            if (userAnswers.length !== expectedEventCount) {
+                alert('Please place all sentences on the timeline!');
+                return;
+            }
+            
+            userAccount.answeredQuestions.set(`tl-${index}`, userAnswers);
+            
+            // Check if all positions are correct
+            const isCorrect = userAnswers.every((pos, i) => 
+                pos === activity.events[i].correctPosition);
+            
+            if (isCorrect) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer();
+            }
+            
+            activity.answered = true;
+            updateUserAccountDisplay();
+            saveProgress();
+            displayActivities();
+        }
+
+        // Check word guess answer
+        function checkWordGuess(index, input) {
+            const activity = allActivities['word-guess'][index];
+            const userAnswer = input.value.trim();
+            
+            if (!userAnswer) {
+                alert('Please enter your guess!');
+                return;
+            }
+            
+            userAccount.answeredQuestions.set(`wg-${index}`, userAnswer);
+            
+            if (userAnswer.toLowerCase() === activity.answer.toLowerCase()) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer();
+            }
+            
+            activity.answered = true;
+            updateUserAccountDisplay();
+            saveProgress();
+            displayActivities();
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            userAccount.score += 2;
+            userAccount.correctAnswers++;
+            userAccount.streak++;
+            
+            // Bonus points for streaks
+            if (userAccount.streak % 5 === 0) {
+                userAccount.score += 5;
+                alert(`5 correct answers in a row! +5 bonus points!`);
+            }
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer() {
+            userAccount.incorrectAnswers++;
+            userAccount.streak = 0;
+        }
+
+        // Update the user account display
+        function updateUserAccountDisplay() {
+            document.getElementById('score').textContent = userAccount.score;
+            document.getElementById('correct-count').textContent = userAccount.correctAnswers;
+            document.getElementById('incorrect-count').textContent = userAccount.incorrectAnswers;
+            document.getElementById('streak-counter').textContent = `Streak: ${userAccount.streak}`;
+            
+            // Calculate remaining questions
+            let remaining = 0;
+            for (const type in allActivities) {
+                remaining += allActivities[type].filter(a => !a.answered).length;
+            }
+            document.getElementById('remaining-count').textContent = remaining;
+            
+            // Update progress bar
+            let totalActivities = 0;
+            let answeredActivities = 0;
+            for (const type in allActivities) {
+                totalActivities += allActivities[type].length;
+                answeredActivities += allActivities[type].filter(a => a.answered).length;
+            }
+            const progressPercent = (answeredActivities / totalActivities) * 100;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+            
+            // Update badges
+            updateBadges(answeredActivities);
+        }
+
+        // Update user badges based on progress
+        function updateBadges(answeredCount) {
+            const beginnerBadge = document.getElementById('beginner-badge');
+            const intermediateBadge = document.getElementById('intermediate-badge');
+            const expertBadge = document.getElementById('expert-badge');
+            
+            beginnerBadge.style.display = answeredCount >= 10 ? 'inline-block' : 'none';
+            intermediateBadge.style.display = answeredCount >= 30 ? 'inline-block' : 'none';
+            expertBadge.style.display = answeredCount >= 60 ? 'inline-block' : 'none';
+        }
+
+        // Reset all progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all your progress? This cannot be undone.')) {
+                localStorage.removeItem('tensePracticeProgress');
+                localStorage.removeItem('answeredActivities');
+                
+                // Reset all activities
+                for (const type in allActivities) {
+                    allActivities[type].forEach(a => a.answered = false);
+                }
+                
+                // Reset user account
+                userAccount.score = 0;
+                userAccount.correctAnswers = 0;
+                userAccount.incorrectAnswers = 0;
+                userAccount.streak = 0;
+                userAccount.answeredQuestions = new Map();
+                
+                updateUserAccountDisplay();
+                displayActivities();
+            }
+        }
+
+        // Initialize the app when the page loads
+        window.onload = init;
+    </script>
+</body>
+</html>

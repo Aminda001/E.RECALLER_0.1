@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E.RECALLER - English Learning Platform</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-img {
+      height: 40px;
+      width: auto;
+    }
+    
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #4a6bff;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .nav-links a:hover {
+      color: #4a6bff;
+    }
+    
+    .nav-links a.active {
+      color: #4a6bff;
+      font-weight: 600;
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 8rem 5% 4rem;
+      background: linear-gradient(135deg, #4a6bff 0%, #8a2be2 100%);
+      color: white;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    .tagline {
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+    }
+    
+    .benefits {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .benefit-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      width: 300px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .benefit-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .benefit-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    
+    .benefit-card p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Buttons */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .main-btn {
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 50px;
+      background-color: white;
+      color: #4a6bff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    
+    .main-btn:hover {
+      background-color: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .study-btn {
+      padding: 0.8rem 2rem;
+      border: 2px solid white;
+      border-radius: 50px;
+      background-color: transparent;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    
+    .study-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    /* Features Section */
+    .features-section {
+      padding: 5rem 5%;
+      background-color: white;
+    }
+    
+    .features-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      color: #333;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #4a6bff;
+    }
+    
+    .feature h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        flex-direction: column;
+        background-color: white;
+        width: 100%;
+        padding: 2rem;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        transition: left 0.3s;
+      }
+      
+      .nav-links.active {
+        left: 0;
+      }
+      
+      .nav-links a {
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .hero {
+        padding: 6rem 5% 3rem;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .benefit-card {
+        width: 100%;
+      }
+    }
+    
+    /* Utility Classes */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo-container">
+      <!-- Add your logo.png file to your project folder -->
+      <img src="images/logo.png" alt="E.RECALLER Logo" class="logo-img">
+      <div class="logo-text">E.RECALLER</div>
+    </div>
+    
+    <nav class="nav-links" id="navLinks">
+      <a href="#features"><i class="fas fa-star"></i> Features</a>
+      <a href="tenses.html"><i class="fas fa-book-open"></i> Lessons</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
+      <a href="feedback.html"><i class="fas fa-clipboard-list"></i> Feedback</a>
+      <a href="profile.html" id="profile-link"><i class="fas fa-user"></i> Profile</a>
+      <a href="help.html" class="active"><i class="fas fa-question-circle"></i> Help Center</a>
+    </nav>
+    
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </header>
+
+  <!-- Main Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Recall your English knowledge...</h1>
+      
+      <p class="tagline">Your personalized platform for mastering English language skills</p>
+      
+      <div class="benefits">
+        <div class="benefit-card">
+          <h3><i class="fas fa-user-graduate"></i> For Students</h3>
+          <p>Specifically designed to help English learners improve their vocabulary, grammar, and communication skills through interactive exercises.</p>
+        </div>
+        
+        <div class="benefit-card">
+          <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+          <p>To make English learning accessible, engaging, and effective for students at all proficiency levels.</p>
+        </div>
+        
+        <div class="benefit-card">
+          <h3><i class="fas fa-check-circle"></i> Why Choose Us</h3>
+          <p>Personalized learning paths, progress tracking, and a supportive community to enhance your English journey.</p>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <div id="guest-buttons">
+          <a href="register.html"><button class="main-btn"><i class="fas fa-user-plus"></i> Register</button></a>
+          <a href="login.html"><button class="main-btn"><i class="fas fa-sign-in-alt"></i> Log In</button></a>
+        </div>
+        <div id="member-buttons" class="hidden">
+          <a href="tenses.html"><button class="study-btn"><i class="fas fa-book-open"></i> Study Tenses →</button></a>
+          <a href="lessons.html"><button class="study-btn"><i class="fas fa-graduation-cap"></i> Lessons →</button></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <h2>How E.RECALLER Helps You</h2>
+    
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-book"></i></div>
+        <h3>Vocabulary Builder</h3>
+        <p>Expand your word bank with our smart flashcards and spaced repetition system that adapts to your learning pace.</p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-pen-fancy"></i></div>
+        <h3>Grammar Practice</h3>
+        <p>Master English grammar through interactive exercises with instant feedback and detailed explanations.</p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-headphones"></i></div>
+        <h3>Listening Skills</h3>
+        <p>Improve comprehension with audio exercises at different difficulty levels and accents from around the world.</p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Progress Tracking</h3>
+        <p>Monitor your improvement with detailed statistics, personalized reports, and achievement milestones.</p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-comments"></i></div>
+        <h3>Speaking Practice</h3>
+        <p>Develop fluency with our voice recognition exercises and conversation simulations.</p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+        <h3>Daily Challenges</h3>
+        <p>Stay motivated with customized daily challenges that reinforce what you've learned.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+    
+    // Check if user is logged in (you'll need to implement actual authentication)
+    // For demo purposes, we'll use localStorage to simulate login status
+    function checkAuthStatus() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      
+      if (isLoggedIn) {
+        document.getElementById('guest-buttons').classList.add('hidden');
+        document.getElementById('member-buttons').classList.remove('hidden');
+        document.getElementById('profile-link').style.display = 'flex';
+      } else {
+        document.getElementById('guest-buttons').classList.remove('hidden');
+        document.getElementById('member-buttons').classList.add('hidden');
+      }
+    }
+    
+    // Check auth status when page loads
+    document.addEventListener('DOMContentLoaded', checkAuthStatus);
+  </script>
+</body>
+</html>
